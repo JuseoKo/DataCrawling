@@ -66,11 +66,14 @@ x = set(week_list)
 week_list = list(x)
 x = set(new_list)
 new_list = list(x)
+
+
 #결과출력
 print(f'실시간 : {new_list}')
 print(f'갯수 : {len(new_list)}')
 print(f'주간인기 : {week_list}')
 print(f'갯수 :{len(week_list)}')
+
 
 #실시간 주소 저장
 with open('실시간.txt','w',encoding='UTF-8') as new:
