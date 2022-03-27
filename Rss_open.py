@@ -18,9 +18,8 @@ add = re.findall('>(.+?)<', soup)
 list_Change = ''
 for i in add:
     list_Change += i + " "
-#남은 태그(url) 제거
-result = re.sub('<img(.+?)alt="">', ' ', list_Change)
-result = re.sub('<a(.+?)">', ' ', result)
+#남은 태그 제거
+result = re.sub('<(.+?)>', ' ', list_Change)
 
 #결과 출력
 print(result)
