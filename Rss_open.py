@@ -22,4 +22,5 @@ for i in add:
 result = re.sub('<img(.+?)alt="">', ' ', list_Change)
 result = re.sub('<a(.+?)">', ' ', result)
 
+#결과 출력
 print(result)
