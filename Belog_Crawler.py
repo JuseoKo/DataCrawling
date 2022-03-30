@@ -96,12 +96,12 @@ def address_save():
         for new_name in new_list:
             new.write(new_name+'\n')
     #주간랭킹 주소 저장
-    with open('주간랭킹.txt','w',encoding='UTF-8') as week:
+    with open(week_file_path,'w',encoding='UTF-8') as week:
         for week_name in week_list:
             week.write(week_name+'\n')
 
 #실행
-if __name__ == "__main__":
+if __name__ == '__main__':
     address_flie_open()
 
     print(f'실시간 데이터 : {new_list} \n데이터 수 : {len(new_list)}')
