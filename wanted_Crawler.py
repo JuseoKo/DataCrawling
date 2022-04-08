@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+import pandas as pd
 
 #각종 변수선언
 if True:
@@ -13,21 +14,24 @@ if True:
     driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
 
     #공통변수
-    file_path = './Data/Work.txt'
+    file_path = './Data/Work[5].csv'
     #주소를 담아둘 배열
     url_list = []
+    #저장과 불러오기 관련 변수
+    data_count = 0
+    frame = ''
 
     #원티드 변수 선언
     #페이지의 구조
     wanted_text_value = '//*[@id="__next"]/div[3]/div[1]/div[1]/div[1]/div[2]/section'
     #스크롤 횟수
-    wanted_scroll_num = 1
+    wanted_scroll_num = 5
     #url
     wanted_url = 'https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all'
 
     # 프로그래머스 변수 선언
     #페이지 수
-    programers_page_num = 1
+    programers_page_num = 5
     #주소
     programers_url = 'https://programmers.co.kr/job?page='
     # 페이지 구조
@@ -103,7 +107,7 @@ def load(value):
             #로딩이 제대로 안된채로 긁어오면 에러발생 (재로딩)
             print('재로딩')
             driver.get(url_list[k])
-            time.sleep(2)
+            time.sleep(3)
             in_data = driver.find_element(by=By.XPATH, value=data_value).text
         #in_data 변수에 글자가 들어있으니 원하는 저장포맷으로 저장하기
         save(in_data, url_list)
@@ -111,17 +115,36 @@ def load(value):
     url_list.clear()
 
 #저장
-def save(data, url_len):
-    for k in range(0, len(url_len)):
-        f = open(file_path,'a')
-        f.write(data)
+def save(in_data, url_len):
+        global data_count, frame
+        frame.loc[data_count] = in_data
+        frame.to_csv(file_path)
+        data_count += 1
+
+#데이터프레임(csv) 불러오기
+def dataframe():
+    global frame
+    try:
+        frame = pd.read_csv(file_path)
+    except:
+        data = {
+            'text' : []
+        }
+        frame = pd.DataFrame(data)
+        frame.to_csv(file_path)
+    return frame
+
 #메인
 if __name__ == '__main__' :
+    # 데이터 프레임 불러오기
+    frames = dataframe()
+
     # 원티드 채용 사이트
     wanted()
+
     # #프로그래머스 채용 사이트
     programers()
-
+    print(frames)
 
 #로딩속도때문에 데이터가 안뜨는거임 즉 로딩이 시작되기 전엔 데이터가 존재하지 않음
 #최종 데이터는 in_data 함수에 존재함
