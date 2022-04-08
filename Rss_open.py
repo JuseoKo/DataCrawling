@@ -9,8 +9,8 @@ urllist_week = Belog_Crawler.week_list
 urllist_day = Belog_Crawler.new_list
 
 # #변수생성
-file_path_week = './주간데이터.txt'
-file_path_day = './일간데이터.txt'
+file_path_week = 'Data/주간데이터.txt'
+file_path_day = 'Data/일간데이터.txt'
 
 
 #객체생성 + 반복문
@@ -34,6 +34,7 @@ for i in range(0, len(urllist_week)):
     #남은 태그 제거
     result = re.sub('<(.+?)>', ' ', list_Change)
     print(result)
+    #파일저장
     f = open(file_path_week,'a')
     for k in range(0, len(urllist_week)):
         data = result

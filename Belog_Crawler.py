@@ -14,8 +14,8 @@ if True:
     week_url = 'https://velog.io'
     new_url = 'https://velog.io/recent'
     #txt파일 경로
-    new_file_path = "./실시간.txt"
-    week_file_path = "./주간랭킹.txt"
+    new_file_path = "Data/실시간.txt"
+    week_file_path = "Data/주간랭킹.txt"
     new_list = []
     week_list = []
 
