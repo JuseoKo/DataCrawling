@@ -1,8 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-import requests
-from bs4 import BeautifulSoup
 
 #각종 변수선언
 if True:
@@ -29,7 +27,7 @@ if True:
 
     # 프로그래머스 변수 선언
     #페이지 수
-    programers_page_num = 3
+    programers_page_num = 1
     #주소
     programers_url = 'https://programmers.co.kr/job?page='
     # 페이지 구조
@@ -86,8 +84,7 @@ def programers():
                     continue
                 else:
                     break
-
-    print(f'주소 : {url_list}\n 갯수 : {len(url_list)}')
+    #데이터 로드
     load(programers_text_value)
     #리스트 초기화
     url_list.clear()
