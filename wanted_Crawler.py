@@ -14,7 +14,7 @@ if True:
     driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
 
     #공통변수
-    file_path = './Data/Work[5].csv'
+    file_path = './Data/Work.csv'
     #주소를 담아둘 배열
     url_list = []
     #저장과 불러오기 관련 변수
@@ -22,21 +22,25 @@ if True:
     frame = ''
 
     #원티드 변수 선언
-    #페이지의 구조
-    wanted_text_value = '//*[@id="__next"]/div[3]/div[1]/div[1]/div[1]/div[2]/section'
     #스크롤 횟수
-    wanted_scroll_num = 5
+    wanted_scroll_num = 10
     #url
     wanted_url = 'https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all'
+    #페이지의 구조
+    wanted_text_value = ['//*[@id="__next"]/div[3]/div[1]/div[1]/div[1]/div[2]/section/p[2]',
+                         '//*[@id="__next"]/div[3]/div[1]/div[1]/div[1]/div[2]/section/p[3]',
+                         '//*[@id="__next"]/div[3]/div[1]/div[1]/div[1]/div[2]/section/p[4]']
 
     # 프로그래머스 변수 선언
     #페이지 수
-    programers_page_num = 5
-    #주소
+    programers_page_num = 10
+    #url
     programers_url = 'https://programmers.co.kr/job?page='
     # 페이지 구조
-    programers_text_value = '/html/body/div[3]/div/div[1]/div/div[1]'
-
+    programers_text_value = ['/html/body/div[3]/div/div[1]/div/div[1]/section[2]',
+                             '/html/body/div[3]/div/div[1]/div/div[1]/section[3]',
+                             '/html/body/div[3]/div/div[1]/div/div[1]/section[4]',
+                             '/html/body/div[3]/div/div[1]/div/div[1]/section[5]',]
 #원티드
 def wanted() :
     #url로드기능
@@ -84,10 +88,8 @@ def programers():
                 url_data = driver.find_element(by=By.XPATH,value=path).get_attribute('href')
                 url_list.append(url_data)
             except:
-                if programers_page_num >= count_page :
-                    continue
-                else:
-                    break
+                break
+
     #데이터 로드
     load(programers_text_value)
     #리스트 초기화
@@ -96,19 +98,28 @@ def programers():
 #데이터 로드기능
 def load(value):
     # 데이터 로드기능
-    data_value = value
     for k in range(0, len(url_list)) :
         #찾은 주소로 들어가기(로딩대기)
         driver.get(url_list[k])
+        driver.implicitly_wait(10)
+        driver.execute_script(f"window.scrollTo(0, 500)")
+        time.sleep(0.5)
+        in_data = ''
         try:
             #해당 경로에 있는 텍스트 긁어오기
-            in_data = driver.find_element(by=By.XPATH, value=data_value).text
+            for i in range(0, 3):
+                try:
+                    data_add = driver.find_element(by=By.XPATH, value=value[i]).text
+                except:
+                    continue
+                in_data = in_data + data_add
         except:
             #로딩이 제대로 안된채로 긁어오면 에러발생 (재로딩)
-            print('재로딩')
             driver.get(url_list[k])
             time.sleep(3)
-            in_data = driver.find_element(by=By.XPATH, value=data_value).text
+            for i in range(0, 3):
+                data_add = driver.find_element(by=By.XPATH, value=value[i]).text
+                in_data = in_data + data_add
         #in_data 변수에 글자가 들어있으니 원하는 저장포맷으로 저장하기
         save(in_data, url_list)
     #리스트 초기화
@@ -133,6 +144,7 @@ def dataframe():
         frame = pd.DataFrame(data)
         frame.to_csv(file_path)
     return frame
+
 
 #메인
 if __name__ == '__main__' :
