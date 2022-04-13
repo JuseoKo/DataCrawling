@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 import time
 import pandas as pd
 import re
+import datetime
 
 #각종 변수선언
 if True:
@@ -15,7 +16,9 @@ if True:
     driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
 
     #공통변수
-    file_path = './Data/Work1.csv'
+    #날짜와 경로
+    day = datetime.date.today()
+    file_path = './Data/Work '+str(day)+'.csv'
     #주소를 담아둘 배열
     url_list = []
     #저장과 불러오기 관련 변수

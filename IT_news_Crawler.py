@@ -3,11 +3,14 @@ from bs4 import BeautifulSoup
 import re
 import feedparser
 import pandas as pd
+import datetime
 
 #변수선언
 if True:
        #변수
-       file_path = './Data/News3.csv'
+       #날짜와 경로
+       day = datetime.date.today()
+       file_path = './Data/News '+str(day)+'.csv'
        #저장과 불러오기 관련 변수
        data_count = 0
        frame = ''
@@ -98,8 +101,6 @@ def ring(a, soup):
 #저장
 def save(data):
        global data_count, frame
-       # #전처리(수정한곳)
-       # data = re.sub('\n','',str(data))
        #데이터 추가
        frame.loc[data_count] = data
        frame.to_csv(file_path)
@@ -134,10 +135,12 @@ def News_main():
                      response = requests.get(url_list[j], headers={"User-Agent": "Mozilla/5.0"})
                      soups = BeautifulSoup(response.content, 'html.parser')
                      data = ring(a, soups)
+                     #전처리
                      data = re.sub('\[', '',str(data))
                      data = re.sub('\]', '',str(data))
                      data = re.sub('\n','',str(data))
                      data = data.strip()
+
                      print(data)
                      save(data)
        print(frames)
