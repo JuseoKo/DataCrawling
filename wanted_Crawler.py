@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 import pandas as pd
+import re
 
 #각종 변수선언
 if True:
@@ -14,7 +15,7 @@ if True:
     driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
 
     #공통변수
-    file_path = './Data/Work.csv'
+    file_path = './Data/Work1.csv'
     #주소를 담아둘 배열
     url_list = []
     #저장과 불러오기 관련 변수
@@ -120,6 +121,7 @@ def load(value):
             for i in range(0, 3):
                 data_add = driver.find_element(by=By.XPATH, value=value[i]).text
                 in_data = in_data + data_add
+                #줄바꿈 제
         #in_data 변수에 글자가 들어있으니 원하는 저장포맷으로 저장하기
         save(in_data, url_list)
     #리스트 초기화
@@ -128,15 +130,18 @@ def load(value):
 #저장
 def save(in_data, url_len):
         global data_count, frame
+        #줄바꿈 제거
+        in_data = re.sub('\n','',str(in_data))
+        #데이터 추가
         frame.loc[data_count] = in_data
-        frame.to_csv(file_path,encoding='utf-8-sig')
+        frame.to_csv(file_path, encoding='utf-8-sig')
         data_count += 1
 
 #데이터프레임(csv) 불러오기
 def dataframe():
     global frame
     try:
-        frame = pd.read_csv(file_path)
+        frame = pd.read_csv(file_path, index_col = 0)
     except:
         data = {
             'text' : []
@@ -152,7 +157,7 @@ if __name__ == '__main__' :
     frames = dataframe()
 
     # 원티드 채용 사이트
-    wanted()
+    # wanted()
 
     # #프로그래머스 채용 사이트
     programers()

@@ -7,7 +7,7 @@ import pandas as pd
 #변수선언
 if True:
        #변수
-       file_path = './Data/News2.csv'
+       file_path = './Data/News3.csv'
        #저장과 불러오기 관련 변수
        data_count = 0
        frame = ''
@@ -98,6 +98,9 @@ def ring(a, soup):
 #저장
 def save(data):
        global data_count, frame
+       # #전처리(수정한곳)
+       # data = re.sub('\n','',str(data))
+       #데이터 추가
        frame.loc[data_count] = data
        frame.to_csv(file_path)
        data_count += 1
@@ -106,13 +109,13 @@ def save(data):
 def dataframe():
        global frame
        try:
-              frame = pd.read_csv(file_path)
+              frame = pd.read_csv(file_path, index_col = 0)
        except:
               data = {
                      'text' : []
               }
               frame = pd.DataFrame(data)
-              frame.to_csv(file_path,encoding='utf-8-sig')
+              frame.to_csv(file_path, encoding='utf-8-sig')
        return frame
 
 #rss주소를 돌아가면서 세팅하기, url_list 초기화
@@ -133,6 +136,7 @@ def News_main():
                      data = ring(a, soups)
                      data = re.sub('\[', '',str(data))
                      data = re.sub('\]', '',str(data))
+                     data = re.sub('\n','',str(data))
                      data = data.strip()
                      print(data)
                      save(data)
