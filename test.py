@@ -14,27 +14,15 @@
 # # data = re.sub('※(.+?)지', '',str(data))
 # # data = re.sub('/(.+?)뉴스1', '',str(data))
 
-# import pandas as pd
-# lista = ['하나', '둘', '셋', '넷']
-# # f = open('./Data/Test.csv','a', newline='')
-# data = {
-#     'text' : []
-# }
-# frame = pd.DataFrame(data)
-# print(frame)
-# new_text_list = ['다섯', '여섯', '일곱']
-#
-# frame.lo
-# data_count = 0
-# for i in range(0, len(new_text_list)) :
-#     add_text = new_text_list[i]
-#     print(f'데이터 추가: {add_text}')
-#     #반환값
-#     data_count += 1
-#
-#     print(data_count)
-#     frame.loc[data_count] = add_text
-#     print(frame)
+import pandas as pd
+lista = ['하나', '둘', '셋', '넷']
+# f = open('./Data/Test.csv','a', newline='')
+data = {
+    'text' : lista
+}
+frame = pd.DataFrame(data)
+print(frame)
+frame.to_csv('./Data/Work1.csv', encoding='utf-8-sig')
 
 # from selenium import webdriver
 # from selenium.webdriver.common.by import By
@@ -67,11 +55,3 @@
 #     print(in_data)
 # if __name__ == '__main__' :
 #     main()
-
-
-
-for i in range(0, 3):
-    print('첫째')
-    for i in range(0, 3):
-        print('둘째')
-        break

@@ -23,7 +23,7 @@ if True:
 
     #원티드 변수 선언
     #스크롤 횟수
-    wanted_scroll_num = 10
+    wanted_scroll_num = 1
     #url
     wanted_url = 'https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all'
     #페이지의 구조
@@ -33,7 +33,7 @@ if True:
 
     # 프로그래머스 변수 선언
     #페이지 수
-    programers_page_num = 10
+    programers_page_num = 1
     #url
     programers_url = 'https://programmers.co.kr/job?page='
     # 페이지 구조
@@ -129,7 +129,7 @@ def load(value):
 def save(in_data, url_len):
         global data_count, frame
         frame.loc[data_count] = in_data
-        frame.to_csv(file_path)
+        frame.to_csv(file_path,encoding='utf-8-sig')
         data_count += 1
 
 #데이터프레임(csv) 불러오기

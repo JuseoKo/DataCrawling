@@ -7,7 +7,7 @@ import pandas as pd
 #변수선언
 if True:
        #변수
-       file_path = './Data/News.csv'
+       file_path = './Data/News2.csv'
        #저장과 불러오기 관련 변수
        data_count = 0
        frame = ''
@@ -112,7 +112,7 @@ def dataframe():
                      'text' : []
               }
               frame = pd.DataFrame(data)
-              frame.to_csv(file_path)
+              frame.to_csv(file_path,encoding='utf-8-sig')
        return frame
 
 #rss주소를 돌아가면서 세팅하기, url_list 초기화
