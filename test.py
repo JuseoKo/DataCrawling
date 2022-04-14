@@ -1,33 +1,45 @@
-# import requests
-# from bs4 import BeautifulSoup
-# import re
-# import feedparser
-#
-# url = 'https://www.hankyung.com/it/article/202204133816i?rss=r'
-# #url 세팅
-# response = requests.get(url)
-# soup = BeautifulSoup(response.content, 'html.parser')
-# news_data = soup.select('#articletxt')
-# # data_def = re.sub('<(.+?)>', '',str(news_data))
-# print(news_data)
+import bs4
+import requests
+from bs4 import BeautifulSoup
+import re
+import feedparser
+import pandas as pd
+def preprocessing(data):
+    data_def = re.sub('\r', '', str(data))
+    data_def = re.sub('\t', '', str(data_def))
+    data_def = re.sub('\n', '', str(data_def))
+    return data_def
 
+url = 'http://www.ddaily.co.kr/news/news_view.php?uid=110361'
+#url 세팅
+response = requests.get(url)
+soup = BeautifulSoup(response.content, 'html.parser')
+data_def = soup.select('#news_body_area')[0].get_text()
+data_def = preprocessing(data_def)
 #판다스
+data = {
+    'text' : []
+}
+frame = pd.DataFrame(data)
+frame.loc[0] = data_def
+frame.to_csv('./Data/test.csv', encoding='utf-8-sig')
+print(frame)
+
+# #판다스
 # import pandas as pd
-# import re
-# lista = ['넷\n둘하나', '셋', '둘']
+# import datetime
+#
+# day = datetime.date.today()
+# lista = ['넷', '셋', '둘']
 # # f = open('./Data/Test.csv','a', newline='')
 # data = {
 #     'text' : lista
 # }
+# path = './Data/test '+str(day)+'.csv'
 # frame = pd.DataFrame(data)
 # print(frame)
-# # frame.replace(r'\n','')
-# frame["feature"]= frame["feature"].replace(r'\\n','')
-# print(frame)
-# frame.loc[0] = (re.sub('넷', '수정', str(frame.iloc[0])))
-# frame.loc[0] = y
-# print(frame)
-# frame.to_csv('./Data/test.csv', encoding='utf-8-sig')
+# frame.to_csv(path, encoding='utf-8-sig')
+
 
 ## 채용 사이트 테스터##
 # from selenium import webdriver
@@ -70,7 +82,7 @@
 # if __name__ == '__main__' :
 #     main()
 
-import re
-d = '하나금융지주\n레베레베ㅔ\nfkdl'
-d = re.sub('\n', '', d)
-print(d)
+# import datetime
+#
+# d = datetime.date.today()
+# print (d)

@@ -27,7 +27,7 @@ if True:
 
     #원티드 변수 선언
     #스크롤 횟수
-    wanted_scroll_num = 1
+    wanted_scroll_num = 10
     #url
     wanted_url = 'https://www.wanted.co.kr/wdlist?country=kr&job_sort=job.latest_order&years=-1&locations=all'
     #페이지의 구조
@@ -37,7 +37,7 @@ if True:
 
     # 프로그래머스 변수 선언
     #페이지 수
-    programers_page_num = 1
+    programers_page_num = 10
     #url
     programers_url = 'https://programmers.co.kr/job?page='
     # 페이지 구조
@@ -56,7 +56,7 @@ def wanted() :
         if i == 0 :
             for j in range(0 ,wanted_scroll_num):
                 driver.execute_script(f"window.scrollTo(0, 1000*{j})")
-                time.sleep(1)
+                time.sleep(1.5)
         try:
             #path 경로설정
             count = str(1+i)
@@ -150,7 +150,7 @@ def dataframe():
             'text' : []
         }
         frame = pd.DataFrame(data)
-        frame.to_csv(file_path)
+        frame.to_csv(file_path, encoding='utf-8-sig')
     return frame
 
 
@@ -160,7 +160,7 @@ if __name__ == '__main__' :
     frames = dataframe()
 
     # 원티드 채용 사이트
-    # wanted()
+    wanted()
 
     # #프로그래머스 채용 사이트
     programers()
