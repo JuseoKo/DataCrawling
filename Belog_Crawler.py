@@ -1,115 +1,114 @@
-import requests
 from bs4 import BeautifulSoup
 import re
 import time
-import keyboard
+from selenium import webdriver
+import feedparser
+import pandas as pd
+import datetime
 
-#변수선언
+#각종 변수선언
 if True:
-    # 반복횟수 카운트 변수
-    count = 0
-    #반복을 위한 변수
-    crawler_start = False
-    # 주소값 변수
-    week_url = 'https://velog.io'
-    new_url = 'https://velog.io/recent'
-    #txt파일 경로
-    new_file_path = "Data/실시간.txt"
-    week_file_path = "Data/주간랭킹.txt"
-    new_list = []
-    week_list = []
+    #데이터 저장 관련
+    frame = ''
+    data_count = 0
+        #날짜와 경로
+    day = datetime.date.today()
+    file_path = './Data/Belog/Belog '+str(day)+'.csv'
 
-#실시간, 주간랭킹 파일 오픈하고 리스트에 저장
-def address_flie_open():
-    global new_list, week_list, new_file_path, week_file_path
-    #새로운글 저장을 위한 배열(이전 저장파일 로드)
-    with open(new_file_path) as new_load:
-        new_list = new_load.read().splitlines()
+    #크롬드라이버 관련
+    #크롬 경로
+    options = webdriver.ChromeOptions()
+    options.binary_location = "/Users/maria/Desktop/Google Chrome.app/Contents/MacOS/Google Chrome"
+    #크롬 드라이버 경로
+    chrome_driver_binary = "/Users/maria/Desktop/Code/capstone_3/chromedriver"
+    driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
 
-    #주간글 저장을 위한 배열(이전 저장파일 로드)
-    with open(week_file_path) as new_load:
-         week_list = new_load.read().splitlines()
-
-#주간랭킹글 긁어오기
-def week_address():
-    global week_url, week_list, new_file_path
-    #객체준비와 한글깨짐을 방지하기 위해 인코딩
-    week_response = requests.get(week_url)
-    week_soup = BeautifulSoup(week_response.content, 'html.parser', from_encoding='cp949')
-    try:
-        # 주간 인기글 25개 긁어오기
-        for i in range(0, 20) :
-            #  선택 경로안에 있는 href 테그만 25개를 불러옴
-            week_href = week_soup.select('#root > div.sc-dPiLbb > div.sc-bqiRlB.eeKvZX > div.sc-bBHHxi.iFCgdF > main.sc-cNKqjZ.frPFLP > div.sc-eJwWfJ.hPOjoM > div.sc-jgrJph.fubVJV > a.sc-hUpaCq.keJMFL')[i].get("href")
-            # rss활용을 위해 아이디만 뽑아내는 정규식(주간)
-            week_add = re.search('/@(.+?)/', week_href)
-            week_data = week_add.group(1)
-            week_result = 'https://v2.velog.io/rss/' + week_data
-            #위에 만들어둔 배열에 저장
-            week_list.append(week_result)
-    except:
-        print('주간 인기글을 불러오지 못했습니다.')
-    #중복제거
-    x = set(week_list)
-    week_list = list(x)
-
-#최신글 긁어오기
-def new_address():
-    global new_list, new_url, count, Crawler_start
-    while not crawler_start:
-        #프로그램 중지
-        keyboard.add_hotkey('space', lambda: Crawler_end())
-
-        #새로고침
-        new_response = requests.get(new_url)
-        new_soup = BeautifulSoup(new_response.content, 'html.parser', from_encoding='cp949')
-
-        #카운트+데이터 가져오기
-        count = count+1
-        try:
-            for i in range(0,5) :
-                new_href = new_soup.select('#root > div.sc-dPiLbb > div.sc-bqiRlB.eeKvZX > div.sc-bBHHxi.iFCgdF > main.sc-cNKqjZ.frPFLP > div.sc-eJwWfJ.hPOjoM > div.sc-jgrJph.fubVJV > a.sc-hUpaCq.keJMFL')[i].get("href")
-                new_add = re.search('/@(.+?)/', new_href)
-                new_data = new_add.group(1)
-                new_result = 'https://v2.velog.io/rss/' + new_data
-                new_list.append(new_result)
-                continue
-        except:
-            print("데이터 수 초과")
-        #중복제거
-        x = set(new_list)
-        new_list = list(x)
-        print(f"\n중지하려면 스페이스바를 누르세요(누른 이후 2분뒤 종료됩니다) \n반복횟수 : {count} \n실시간 데이터 수 : {len(new_list)}")
-        #대기시간
+    #URL 과 RSS 데이터를 몇개 받아올지 갯수
+    url = 'https://velog.io/recent'
+    rss_url = 'https://v2.velog.io/rss/'
+    rss_scroll_num = 1
+    rss_list = []
+# Rss주소 긁어오기
+def Rss_search():
+    global rss_list
+    #Rss 데이터 수
+    driver.implicitly_wait(10)
+    for j in range(0, rss_scroll_num):
+        driver.execute_script(f"window.scrollTo(0, 1000*{j})")
         time.sleep(2)
 
-#프로그램 종료
-def Crawler_end():
-    global crawler_start
-    crawler_start = True
+    #수프 이용을 위해 파싱
+    htmls = driver.page_source
+    soup = BeautifulSoup(htmls, 'html.parser')
+    href = soup.prettify()
+    href = re.findall('/@(.+?)/', href)
+    #중복제거
+    href = set(href)
+    href = list(href)
+    return href
+#데이터 추출
+def Data(Rss):
+        for i in range(0, len(Rss)):
+            Data_url = rss_url + Rss[i]
+            print(Data_url)
+            feed = feedparser.parse(Data_url)
+            j = -1
+            print(Rss)
+            for k in feed['entries'] :
+                j = j+1
+                try:
+                    data = feed['entries'][j]['summary']
+                    data = preprocessing(data)
+                    if data == '':
+                        continue
+                    print(data)
+                    save(data)
+                except KeyError:
+                    continue
+#전처리
+def preprocessing(data):
+    data_def = re.sub('<(.+?)>', '',str(data))
+    data_def = re.sub('\r', '', str(data_def))
+    data_def = re.sub('\t', '', str(data_def))
+    data_def = re.sub('\n', '', str(data_def))
+    data_def = re.sub('\f', '', str(data_def))
+    data_def = re.sub('\v', '', str(data_def))
+    data_def = re.sub('\[', '', str(data_def))
+    data_def = re.sub('\]', '', str(data_def))
+    data_def = data_def.strip()
+    return data_def
+#저장
+def save(data):
+    global data_count, frame
+    #데이터 추가
+    frame.loc[data_count] = data
+    frame.to_csv(file_path, encoding='utf-8-sig')
+    data_count += 1
 
-#주소저장
-def address_save():
-    global new_list, week_list
-    #실시간 주소 저장
-    with open(new_file_path,'w',encoding='UTF-8') as new:
-        for new_name in new_list:
-            new.write(new_name+'\n')
-    #주간랭킹 주소 저장
-    with open(week_file_path,'w',encoding='UTF-8') as week:
-        for week_name in week_list:
-            week.write(week_name+'\n')
+#데이터프레임(csv) 불러오기
+def dataframe():
+    global frame
+    try:
+        frame = pd.read_csv(file_path, index_col = 0)
+    except:
+        data = {
+            'text' : []
+        }
+        frame = pd.DataFrame(data)
+        frame.to_csv(file_path, encoding='utf-8-sig')
+    return frame
 
-#실행
-if __name__ == '__main__':
-    address_flie_open()
+if __name__ == '__main__' :
+    #실행
+    driver.get(url)
+    frames = dataframe()
+    #데이터 가져오기
+    Data(Rss_search())
 
-    print(f'실시간 데이터 : {new_list} \n데이터 수 : {len(new_list)}')
-    print(f'주간랭킹 데이터 : {week_list} \n데이터 수 : {len(week_list)}')
 
-    week_address()
-    new_address()
-    address_save()
-    #결과출력
-    print(f'\n__결과__\n실시간 데이터 수 : {len(new_list)}')
-    print(f'주간랭킹 데이터 수 :{len(week_list)}')
+# htmls = driver.page_source
+# soup = BeautifulSoup(htmls, 'html.parser')
+# data = soup.prettify()
+# print(data)
+# last_data = re.findall('/@(.+?)/', data)
+# print(last_data)

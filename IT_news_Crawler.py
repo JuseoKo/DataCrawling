@@ -10,7 +10,7 @@ if True:
        #변수
        #날짜와 경로
        day = datetime.date.today()
-       file_path = './Data/News '+str(day)+'.csv'
+       file_path = './Data/News/News '+str(day)+'.csv'
        #저장과 불러오기 관련 변수
        data_count = 0
        frame = ''
@@ -30,31 +30,30 @@ if True:
 #경향
 def khan(soup):
        news_data = soup.select('#articleBody > p.content_text')
-       data_def = re.sub('<(.+?)>', '',str(news_data))
+       data_def = preprocessing(str(news_data))
        return data_def
 #아이뉴스
 def inews(soup):
        news_data = soup.select('#articleBody > p')
-       data_def = re.sub('<(.+?)>', '',str(news_data))
-       data_def = re.sub('아이뉴스(.+?)기자','',str(data_def))
+       data_def = re.sub('아이뉴스(.+?)기자','',str(news_data))
+       data_def = preprocessing(data_def)
        return data_def
 #한경
 def hankyung(soup):
        news_data = soup.select('#articletxt')
-       data_def = re.sub('<(.+?)>', '',str(news_data))
+       data_def = preprocessing(str(news_data))
        return data_def
 #동아일보
 def donga(soup):
        news_data = soup.select('body > main > div > div.main-content.col-lg-8 > div.article > article > p')
-       data_def = re.sub('<(.+?)>', '',str(news_data))
-       data_def = re.sub('IT동아(.+?)기자', '',str(data_def))
+       data_def = re.sub('IT동아(.+?)기자', '',str(news_data))
+       data_def = preprocessing(data_def)
        return data_def
 #it비즈
 def itbiz(soup):
        news_data = soup.select('#article-view-content-div > p')
-       data_def = re.sub('<(.+?)>', '',str(news_data))
+       data_def = preprocessing(str(news_data))
        return data_def
-
 #파이낸셜
 def fnnews(soup):
        news_data = soup.select('#article_content')[0].get_text()
@@ -63,11 +62,10 @@ def fnnews(soup):
        data_def = re.sub('/(.+?)뉴스1', '',str(data_def))
        data_def = preprocessing(data_def)
        return data_def
-
 #디지털데일리
 def ddaily(soup):
        data_def = soup.select('#news_body_area')[0].get_text()
-       data_def = re.sub('디지털(.+?)기자', '',data_def)
+       data_def = re.sub('디지털(.+?)기자', '',str(data_def))
        data_def = preprocessing(data_def)
        return data_def
 #한국
@@ -82,17 +80,23 @@ def hankooki(soup):
        response = requests.get(main_url, headers={"User-Agent": "Mozilla/5.0"})
        soup = BeautifulSoup(response.content, 'html.parser')
        data = soup.select('#article-view-content-div > p')
-       data = re.sub('<(.+?)>','', str(data))
+       #개별 전처리
        data = re.sub('데일리(.+?)기자', '', str(data))
-       return data
-
-#보편적 전처리
-def preprocessing(data):
-       data_def = re.sub('\r', '', str(data))
-       data_def = re.sub('\t', '', str(data_def))
-       data_def = re.sub('\n', '', str(data_def))
+       data_def = preprocessing(data)
        return data_def
 
+#전처리
+def preprocessing(data):
+       data_def = re.sub('<(.+?)>', '',str(data))
+       data_def = re.sub('\r', '', str(data_def))
+       data_def = re.sub('\t', '', str(data_def))
+       data_def = re.sub('\n', '', str(data_def))
+       data_def = re.sub('\f', '', str(data_def))
+       data_def = re.sub('\v', '', str(data_def))
+       data_def = re.sub('\[', '', str(data_def))
+       data_def = re.sub('\]', '', str(data_def))
+       data_def = data_def.strip()
+       return data_def
 #뉴스 종류별 회전
 def ring(a, soup):
        #파이낸셜 , 비즈, 디데일리, 한국,경향,아이,한경,동아
@@ -119,7 +123,7 @@ def save(data):
        global data_count, frame
        #데이터 추가
        frame.loc[data_count] = data
-       frame.to_csv(file_path)
+       frame.to_csv(file_path, encoding='utf-8-sig')
        data_count += 1
 
 #데이터프레임(csv) 불러오기
@@ -151,11 +155,6 @@ def News_main():
                      response = requests.get(url_list[j], headers={"User-Agent": "Mozilla/5.0"})
                      soups = BeautifulSoup(response.content, 'html.parser')
                      data = ring(a, soups)
-                     #전처리
-                     data = re.sub('\[', '',str(data))
-                     data = re.sub('\]', '',str(data))
-                     data = re.sub('\n','',str(data))
-                     data = data.strip()
 
                      print(data)
                      save(data)

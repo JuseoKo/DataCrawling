@@ -1,29 +1,67 @@
-import bs4
-import requests
-from bs4 import BeautifulSoup
-import re
-import feedparser
-import pandas as pd
-def preprocessing(data):
-    data_def = re.sub('\r', '', str(data))
-    data_def = re.sub('\t', '', str(data_def))
-    data_def = re.sub('\n', '', str(data_def))
-    return data_def
+# import bs4
+# import requests
+# from bs4 import BeautifulSoup
+# import re
+# import feedparser
+# f = feedparser.parse('https://v2.velog.io/rss/tjdrn990423')
+# for i in range(0,3):
+#     try:
+#         print(f.keys())
+#         print(f['entries'][0]['summary'])
+#     except KeyError:
+#         print('예외처리')
+#     j = -1
+print('아니 \b 아니\f아니')
 
-url = 'http://www.ddaily.co.kr/news/news_view.php?uid=110361'
-#url 세팅
-response = requests.get(url)
-soup = BeautifulSoup(response.content, 'html.parser')
-data_def = soup.select('#news_body_area')[0].get_text()
-data_def = preprocessing(data_def)
-#판다스
-data = {
-    'text' : []
-}
-frame = pd.DataFrame(data)
-frame.loc[0] = data_def
-frame.to_csv('./Data/test.csv', encoding='utf-8-sig')
-print(frame)
+# for i in f['entries'] :
+#     j = j+1
+#     data = f['entries'][j]['summary']
+#     data = re.sub('<(.+?)>','', data)
+#     data = re.sub('\n', '', data)
+#     print(f'데이터 : {data}')
+
+#{'bozo': False,'entries':
+# print(f)
+# pprint(f.entries[])
+# data = re.findall('summary\':(.+?)</p>\',', f)
+# data = re.sub('<(.+?)>','', data[0])
+# data = re.sub('&quot','', data)
+# data = re.sub('(\n)', '', data)
+# print(data)
+# # print(f['feed']['summary'])
+# print(f['feed'].keys())
+# data = f['feed']['summary']
+# print(f'정보 : {data}')
+# for feed in f['feed']:
+#     print(feed)
+
+# # Print all title in entries
+# for feed in f['entries']:
+#     print(feed.updated)
+
+
+
+# import pandas as pd
+# def preprocessing(data):
+#     data_def = re.sub('\r', '', str(data))
+#     data_def = re.sub('\t', '', str(data_def))
+#     data_def = re.sub('\n', '', str(data_def))
+#     return data_def
+#
+# url = 'http://www.ddaily.co.kr/news/news_view.php?uid=110361'
+# #url 세팅
+# response = requests.get(url)
+# soup = BeautifulSoup(response.content, 'html.parser')
+# data_def = soup.select('#news_body_area')[0].get_text()
+# data_def = preprocessing(data_def)
+# #판다스
+# data = {
+#     'text' : []
+# }
+# frame = pd.DataFrame(data)
+# frame.loc[0] = data_def
+# frame.to_csv('./Data/test.csv', encoding='utf-8-sig')
+# print(frame)
 
 # #판다스
 # import pandas as pd
@@ -86,3 +124,11 @@ print(frame)
 #
 # d = datetime.date.today()
 # print (d)
+
+# a = 3
+# b = 4
+# llist = []
+#
+# llist.append(a)
+# llist.append(b)
+# print(llist)
