@@ -6,7 +6,10 @@ import pandas as pd
 file_path = './New/Data.csv'
 frame = ''
 data_count = 0
+#최근 년도
 days = 202205
+#몇개월치 크롤링할지 정하기
+month = 1
 #전처리
 def preprocessing(data):
     data_def = re.sub('<(.+?)>', '',str(data))
@@ -26,11 +29,11 @@ def urls(dayss):
     url_list = []
     url_day = []
 
-    for k in range(0,144):
+    for k in range(0,month):
         #주소 결정변수 , range가 달력(월)수
         page = 1
         day = dayss[k]
-        for j in range(0,80):
+        for j in range(0,70):
             #주소결정 range가 페이지수
             pages = page+j
             url = 'https://www.inews24.com/list/it?date='+str(day)+'&page='+str(pages)+''
@@ -47,8 +50,8 @@ def urls(dayss):
                 except IndexError:
                     break
     #중복제거
-    set(url_list)
-    list(url_list)
+    url_list = set(url_list)
+    url_list = list(url_list)
     inews(url_list, url_day)
 
 
@@ -97,7 +100,7 @@ def dataframe():
 def day():
     global days
     days_list = []
-    for i in range(0,120):
+    for i in range(0,month):
         if days%100 == 1:
             days = days-89
         else:
