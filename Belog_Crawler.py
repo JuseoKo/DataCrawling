@@ -26,8 +26,9 @@ if True:
     #URL 과 RSS 데이터를 몇개 받아올지 갯수
     url = 'https://velog.io/recent'
     rss_url = 'https://v2.velog.io/rss/'
-    rss_scroll_num = 1
+    rss_scroll_num = 10
     rss_list = []
+
 # Rss주소 긁어오기
 def Rss_search():
     global rss_list
@@ -48,12 +49,15 @@ def Rss_search():
     return href
 #데이터 추출
 def Data(Rss):
+        c = 1
         for i in range(0, len(Rss)):
             Data_url = rss_url + Rss[i]
-            print(Data_url)
+            #데이터
+            print(f'{c}번째 주소 : {Data_url}')
+            c = c+1
+
             feed = feedparser.parse(Data_url)
             j = -1
-            print(Rss)
             for k in feed['entries'] :
                 j = j+1
                 try:
@@ -104,11 +108,3 @@ if __name__ == '__main__' :
     frames = dataframe()
     #데이터 가져오기
     Data(Rss_search())
-
-
-# htmls = driver.page_source
-# soup = BeautifulSoup(htmls, 'html.parser')
-# data = soup.prettify()
-# print(data)
-# last_data = re.findall('/@(.+?)/', data)
-# print(last_data)
