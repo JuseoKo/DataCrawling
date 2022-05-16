@@ -1,12 +1,12 @@
 # Cap3
 
-캡스톤3 프로젝트
+./Not : 폐기
 
-로컬 터미널 설정
-echo "# Cap3" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/MariaTe1/Cap3.git
-git push -u origin main
+Data 크롤링 연습
+./Disposal/Belog_Crawler.py : 벨로그의 RSS를 가지고 게시글 크롤링
+
+./Disposal/IT_news_Crawler.py : IT뉴스의 RSS를 이용하여 크롤링
+
+./Disposal/Work_Crawler.py: 채용사이트 크롤링
+
+
