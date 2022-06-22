@@ -17,7 +17,7 @@ if True:
     value = '/html/body/div/div[2]/div[5]/div/table[5]/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr/td'
     value_2 = '/html/body/div/div[2]/div[5]/div/table[2]/tbody/tr[3]/td/table/tbody/tr/td[5]/div/div[1]'
     frame : ''
-    file_path = './New/ppomppu.csv'
+    file_path = '../New/ppomppu.csv'
     #데이터 저장 포맷 설정
 
 

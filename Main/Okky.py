@@ -6,7 +6,7 @@ import pandas as pd
 if True:
     #okky 의 페이지 수
     page = 6073
-    file_path = 'New/okky_Data.csv'
+    file_path = '../New/okky_Data.csv'
     frame = ''
     #마지막 데이터 줄 + 1
     # line = 5070
@@ -61,12 +61,12 @@ def url_add():
     url_list = set(url_list)
     url_list = list(url_list)
     for i in range(0, len(url_list)):
-        f = open('./Okky_Link.txt', 'a')
+        f = open('../Okky_Link.txt', 'a')
         f.write(f'{url_list[i]}\n')
     f.close()
 #텍스트 파일로 저장된 url 불러오기
 def url_load():
-    f = open('./Okky_Link.txt', 'r')
+    f = open('../Okky_Link.txt', 'r')
     data = f.readlines()
     #\n제거
     data = [i.strip() for i in data]

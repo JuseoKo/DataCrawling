@@ -15,7 +15,7 @@ if True:
     driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
 
     #URL 과 RSS 데이터를 몇개 받아올지 갯수
-    file_path = 'New/Gb.csv'
+    file_path = '../New/Gb.csv'
 #전처리
 def preprocessing(data):
     data_def = re.sub('<(.+?)>', '',str(data))

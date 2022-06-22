@@ -5,7 +5,7 @@ import requests
 import re
 import pandas as pd
 
-file_path = 'New/News_Data.csv'
+file_path = '../New/News_Data.csv'
 frame = ''
 #마지막 데이터 줄 + 1
 line = 189325
