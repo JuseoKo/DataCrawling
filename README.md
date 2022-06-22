@@ -9,4 +9,8 @@ Data 크롤링 연습
 
 ./Disposal/Work_Crawler.py: 채용사이트 크롤링
 
-
+./Main 
+msit.py : 과학기술정보통싱부 크롤링
+News.py : iNews 크롤링
+Okky.py : OKKy 크롤링
+poomppu.py : 뽐뿌 크롤링
