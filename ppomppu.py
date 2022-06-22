@@ -13,7 +13,7 @@ if True:
     driver = webdriver.Chrome(chrome_driver_binary, chrome_options=options)
 
     #url 번호카운트 , 데이터 xpath,날짜 데이터 xpath, 데이터 프레임 생성, 데이터 저장경로,
-    line = 1
+    line = 25000
     value = '/html/body/div/div[2]/div[5]/div/table[5]/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr/td'
     value_2 = '/html/body/div/div[2]/div[5]/div/table[2]/tbody/tr[3]/td/table/tbody/tr/td[5]/div/div[1]'
     frame : ''
@@ -23,7 +23,7 @@ if True:
 
 #메인
 def main():
-    for i in range(line, 25000):
+    for i in range(line, 25100):
         try:
             url = 'https://www.ppomppu.co.kr/zboard/view.php?id=developer&page=1&divpage=5&no='+str(i)+''
             driver.get(url)

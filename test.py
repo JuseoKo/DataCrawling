@@ -8,17 +8,19 @@ import datetime
 import pandas as pd
 
 import re
-def preprocessing(data):
-    data_def = re.sub('<(.+?)>', '',str(data))
-    data_def = re.sub('\r', '', str(data_def))
-    data_def = re.sub('\t', '', str(data_def))
-    data_def = re.sub('\n', '', str(data_def))
-    data_def = re.sub('\f', '', str(data_def))
-    data_def = re.sub('\v', '', str(data_def))
-    data_def = re.sub('\[', '', str(data_def))
-    data_def = re.sub('\]', '', str(data_def))
-    data_def = data_def.strip()
-    return data_def
+# def preprocessing(data):
+#     data_def = re.sub('<(.+?)>', '',str(data))
+#     data_def = re.sub('\r', '', str(data_def))
+#     data_def = re.sub('\t', '', str(data_def))
+#     data_def = re.sub('\n', '', str(data_def))
+#     data_def = re.sub('\f', '', str(data_def))
+#     data_def = re.sub('\v', '', str(data_def))
+#     data_def = re.sub('\[', '', str(data_def))
+#     data_def = re.sub('\]', '', str(data_def))
+#     data_def = data_def.strip()
+#     return data_def
+
+# f = open('./2.txt', 'r')
 
 # #193
 # # url = 'https://gall.dcinside.com/board/view/?id=programming&no=165001'
@@ -75,8 +77,12 @@ def preprocessing(data):
 # print(year(day))
 # print(month(day))
 
-# month(data_2)
-o = pd.read_csv('./New/okky_Data.csv', index_col=0)
-p = pd.read_csv('./New/ppomppu.csv', index_col=0)
-# n = pd.read_csv('./New/News_Data.csv', index_col=0)
-print(o)
+# # month(data_2)
+# o = pd.read_csv('./New/okky_Data.csv', index_col=0)
+# p = pd.read_csv('./New/ppomppu.csv', index_col=0)
+# # n = pd.read_csv('./New/News_Data.csv', index_col=0)
+# print(o)
+
+
+data = 3
+print(type(data))
