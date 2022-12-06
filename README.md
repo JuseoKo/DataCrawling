@@ -1,15 +1,18 @@
 # Cap3
 
-./Not : 폐기
+## Not 
+ belog 실시간 주소수집
 
-Data 크롤링 연습
-./Disposal/Belog_Crawler.py : 벨로그의 RSS를 가지고 게시글 크롤링
+## Belog_Crawler
+벨로그의 RSS를 이용한 게시글 크롤링
 
-./Disposal/IT_news_Crawler.py : IT뉴스의 RSS를 이용하여 크롤링
+## IT_news_Crawler.py
+RSS를 이용한 It뉴스크롤링
 
-./Disposal/Work_Crawler.py: 채용사이트 크롤링
+## Work_Crawler.py
+각종 채용사이트 크롤링
 
-./Main 
+## Main 
 msit.py : 과학기술정보통싱부 크롤링
 News.py : iNews 크롤링
 Okky.py : OKKy 크롤링
